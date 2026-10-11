@@ -99,7 +99,7 @@ The script checks this numerically in two ways:
 1. it fits `|Re z_k| = C*(Im z_k)^p` on the high-frequency tail and should obtain `p` close to `-2` and `C` close to `1`;
 2. it compares the computed roots with the complete asymptotic expression above and reports the scaled error `k^3 |lambda_k-lambda_k^asym|`.
 
-With the default values `k=8,...,60`, the corrected code gives approximately
+With the default values `k=8,...,60`, the code gives approximately
 
 ```text
 p = -1.999664,
@@ -108,19 +108,6 @@ maximum root residual = 2.1e-11,
 max k^3 |lambda_k-lambda_k^asym| on the fitted tail = 6.70e-2.
 ```
 
-## Corrections made to the recovered script
-
-The numerical idea of the original script was correct. The cleanup only makes the comparison with the paper more explicit and robust:
-
-- the initial guess uses both the real and imaginary parts of the asymptotic displacement from the paper;
-- the residual of every computed complex root is checked;
-- the code raises an error if no sufficiently accurate root is found;
-- the complete asymptotic approximation stated in the paper is computed;
-- that asymptotic prediction is superimposed on the log-log plot;
-- the `O(k^-3)` scaled root error is reported;
-- the figure is saved as `spectrum_P_disk.pdf` while preserving the simple structure of the original Python code.
-
-The numerical computation is only an illustration/check of the spectral construction. The proof of existence, uniqueness near the Bessel zeros, and the asymptotic expansion is the analytical argument in the paper.
 
 ## Requirements
 
