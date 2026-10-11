@@ -1,11 +1,11 @@
 # Spectrum of the wave equation with hyperbolic boundary condition on the disk
 
-Python code related to the spectral construction used in:
+Python script for the spectral computation in:
 
 > H. Parada and N. Vanspranghe, **Optimal stabilization rate for the wave equation with hyperbolic boundary condition**.  
 > HAL: https://hal.science/hal-05426803
 
-The script `spectrum_P_disk.py` is a numerical check of the high-frequency eigenvalues used in the optimality part of the paper.
+`spectrum_P_disk.py` computes high-frequency eigenvalues for the radial mode and compares them with the asymptotic formula from the paper.
 
 ## Spectral equation
 
@@ -15,22 +15,22 @@ On the unit disk, separation of variables gives radial eigenfunctions
 u(r,theta)=J_n(lambda*r)e^{i n theta}.
 ```
 
-For a complex number `lambda`, the boundary condition gives the characteristic equation
+The boundary condition gives the characteristic equation
 
 ```text
 (n^2+i*lambda-lambda^2) J_n(lambda)
     +lambda J_n'(lambda)=0.
 ```
 
-If `lambda` is a root, then
+For each root `lambda`,
 
 ```text
 z=i*lambda
 ```
 
-is an eigenvalue of the quadratic pencil `P` considered in the paper.
+is the corresponding eigenvalue of the quadratic pencil `P`.
 
-The optimality argument only needs the radial mode `n=0`, for which the equation becomes
+For the radial mode `n=0`, the equation becomes
 
 ```text
 (i*lambda-lambda^2)J_0(lambda)+lambda J_0'(lambda)=0.
@@ -38,9 +38,9 @@ The optimality argument only needs the radial mode `n=0`, for which the equation
 
 ## What the code does
 
-The code starts from the positive zeros `alpha_k` of `J_0`, because the complex roots of the dissipative problem are small perturbations of them at high frequency.
+The solver starts near the positive zeros `alpha_k` of `J_0`.
 
-For every `k` between `k_start` and `k_end`, it solves the two real equations
+For `k_start <= k <= k_end`, it solves
 
 ```text
 Re F(lambda)=0,
@@ -53,7 +53,7 @@ where
 F(lambda)=(i*lambda-lambda^2)J_0(lambda)+lambda J_0'(lambda).
 ```
 
-The initial guess uses the asymptotic displacement proved in the paper. The script then sets
+The initial guess comes from the asymptotic formula in the paper. The script sets
 
 ```text
 z_k=i*lambda_k
@@ -92,14 +92,14 @@ In particular,
 |Re z_k| ~ (Im z_k)^(-2).
 ```
 
-This is the spectral behaviour used to show that the resolvent estimate, and consequently the `1/t` energy decay rate, cannot be improved.
+The paper uses this behaviour to show that the resolvent bound and the `1/t` energy decay rate are sharp.
 
-The script checks this numerically in two ways:
+The numerical comparison has two parts:
 
-1. it fits `|Re z_k| = C*(Im z_k)^p` on the high-frequency tail and should obtain `p` close to `-2` and `C` close to `1`;
-2. it compares the computed roots with the complete asymptotic expression above and reports the scaled error `k^3 |lambda_k-lambda_k^asym|`.
+1. A fit of `|Re z_k| = C*(Im z_k)^p` on the high-frequency tail, with expected values `p=-2` and `C=1`.
+2. A comparison with the asymptotic formula above, using the scaled error `k^3 |lambda_k-lambda_k^asym|`.
 
-With the default values `k=8,...,60`, the code gives approximately
+Typical output with the default range `k=8,...,60`:
 
 ```text
 p = -1.999664,
@@ -107,7 +107,6 @@ C = 0.998137,
 maximum root residual = 2.1e-11,
 max k^3 |lambda_k-lambda_k^asym| on the fitted tail = 6.70e-2.
 ```
-
 
 ## Requirements
 
